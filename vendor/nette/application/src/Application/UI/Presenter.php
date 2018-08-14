@@ -188,7 +188,7 @@ abstract class Presenter extends Control implements Application\IPresenter
 			// calls $this->action<Action>()
 			$this->tryCall($this->formatActionMethod($this->action), $this->params);
 
-			// autoload components
+			// autoload Components
 			foreach ($this->globalParams as $id => $foo) {
 				$this->getComponent($id, false);
 			}
@@ -1129,8 +1129,8 @@ abstract class Presenter extends Control implements Application\IPresenter
 
 
 	/**
-	 * Returns array of persistent components.
-	 * This default implementation detects components by class-level annotation @persistent(cmp1, cmp2).
+	 * Returns array of persistent Components.
+	 * This default implementation detects Components by class-level annotation @persistent(cmp1, cmp2).
 	 * @return array
 	 */
 	public static function getPersistentComponents()

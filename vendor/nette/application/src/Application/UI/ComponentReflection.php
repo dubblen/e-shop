@@ -72,7 +72,7 @@ class ComponentReflection extends \ReflectionClass
 
 	/**
 	 * @param  string|null
-	 * @return array of persistent components.
+	 * @return array of persistent Components.
 	 */
 	public function getPersistentComponents($class = null)
 	{

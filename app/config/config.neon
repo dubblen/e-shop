@@ -11,5 +11,15 @@ session:
 	expiration: 14 days
 
 
+database:
+	dsn: 'mysql:host=127.0.0.1;dbname=e-shop;port=8889'
+	user:   root
+	password:   root
+	options:
+		lazy: yes
+
+
 services:
+	- App\Model\UserManager
+	- App\Forms\FormFactory
 	router: App\RouterFactory::createRouter

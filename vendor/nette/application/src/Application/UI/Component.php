@@ -11,10 +11,10 @@ use Nette;
 
 
 /**
- * Component is the base class for all Presenter components.
+ * Component is the base class for all Presenter Components.
  *
  * Components are persistent objects located on a presenter. They have ability to own
- * other child components, and interact with user. Components have properties
+ * other child Components, and interact with user. Components have properties
  * for storing their status, and responds to user command.
  *
  * @property-read Presenter $presenter

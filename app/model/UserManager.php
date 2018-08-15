@@ -16,15 +16,12 @@ class UserManager implements Nette\Security\IAuthenticator
 	const
 		TABLE_NAME = 'users',
 		COLUMN_ID = 'user_id',
-		COLUMN_NAME = 'user_name',
 		COLUMN_PASSWORD_HASH = 'user_pass',
 		COLUMN_EMAIL = 'user_email',
 		COLUMN_ROLE = 'role',
 	    COLUMN_DATE = 'date_created',
 	    COLUMN_SURNAME = 'first_name',
-        COLUMN_LASTNAME = 'last_name',
-        COLUMN_ABOUTME = 'about_me',
-        COLUMN_IMAGE = 'image';
+        COLUMN_LASTNAME = 'last_name';
 
 
 	/** @var Nette\Database\Context */
@@ -44,14 +41,14 @@ class UserManager implements Nette\Security\IAuthenticator
 	 */
 	public function authenticate(array $credentials)
 	{
-		list($username, $password) = $credentials;
+		list($email, $password) = $credentials;
 
 		$row = $this->database->table(self::TABLE_NAME)
-			->where(self::COLUMN_NAME, $username)
+			->where(self::COLUMN_EMAIL, $email)
 			->fetch();
 
 		if (!$row) {
-			throw new Nette\Security\AuthenticationException('Jméno je nesprávné.', self::IDENTITY_NOT_FOUND);
+			throw new Nette\Security\AuthenticationException('Účet s tímto emailem ještě není zaregistrován', self::IDENTITY_NOT_FOUND);
 
 		} elseif (!Passwords::verify($password, $row[self::COLUMN_PASSWORD_HASH])) {
             throw new Nette\Security\AuthenticationException('Heslo je nesprávné', self::IDENTITY_NOT_FOUND);
@@ -76,19 +73,16 @@ class UserManager implements Nette\Security\IAuthenticator
 	 * @return void
 	 * @throws DuplicateNameException
 	 */
-	public function add($username, $email, $password, $surname, $lastname, $aboutme, $image)
+	public function add($email, $password, $surname, $lastname)
 	{
 		try {
 			$this->database->table(self::TABLE_NAME)->insert([
-				self::COLUMN_NAME => $username,
 				self::COLUMN_PASSWORD_HASH => Passwords::hash($password),
 				self::COLUMN_EMAIL => $email,
                 self::COLUMN_ROLE => "user",
                 self::COLUMN_DATE => new DateTime,
                 self::COLUMN_SURNAME => $surname,
-                self::COLUMN_LASTNAME => $lastname,
-                self::COLUMN_ABOUTME => $aboutme,
-                self::COLUMN_IMAGE => $image
+                self::COLUMN_LASTNAME => $lastname
 
 			]);
 		} catch (Nette\Database\UniqueConstraintViolationException $e) {

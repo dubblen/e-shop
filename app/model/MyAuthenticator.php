@@ -17,9 +17,9 @@ class MyAuthenticator implements Security\IAuthenticator
 
     function authenticate(array $credentials)
     {
-        list($username, $password) = $credentials;
+        list($email, $password) = $credentials;
         $row = $this->database->table('users')
-            ->where('user_name', $username)->fetch();
+            ->where('user_email', $email)->fetch();
 
         if (!$row) {
             throw new Security\AuthenticationException('User not found.');
@@ -30,7 +30,7 @@ class MyAuthenticator implements Security\IAuthenticator
         }
         else
         {
-            return new Security\Identity($row->user_id, ['user_name' => $row->user_name]);
+            return new Security\Identity($row->user_id, ['user_email' => $row->user_email]);
         }
 
     }

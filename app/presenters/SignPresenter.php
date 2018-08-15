@@ -2,7 +2,6 @@
 
 namespace App\Presenters;
 
-use Nette;
 use Nette\Application\UI\Form;
 use Nette\Application\UI;
 use Nette\Database\Context;
@@ -35,17 +34,12 @@ class SignPresenter extends BasePresenter
             ->setRequired("Vyplňte prosím křestní jméno");
         $form->addText("lastname")
             ->setRequired("Vyplňte prosím přijmení");
-        $form->addText("username")
-            ->setRequired("Vyplňte prosím přihlašovací jméno");
         $form->addEmail("email")
             ->setRequired("Vyplňte prosím email");
         $form->addPassword("password")
             ->setRequired("Vyplňte prosím heslo");
         $form->addPassword("passwordconfirm")
             ->setRequired("Vyplňte prosím heslo pro ověření");
-        $form->addText("aboutme");
-        $form->addUpload('image','Obrázek: ')
-            ->setRequired("Prosím vyberte obrázek k nahrání.");
         $form->addSubmit("submit");
         $form->onSuccess[] = [$this, 'registrationSuccess'];
         return $form;
@@ -53,41 +47,21 @@ class SignPresenter extends BasePresenter
 
     public function registrationSuccess($form, $values)
     {
-        $file = $values->image;
+        if ($values)
+        {
 
-
-        if ($values->username != "" && $file->isImage()) {
-
-            $file_ext=strtolower(mb_substr($file->getSanitizedName(), strrpos($file->getSanitizedName(), ".")));
-
-            $filename = Nette\Utils\Random::generate(15);
-            $filename = $filename . $file_ext;
-
-
-            $isUnique = ($this->database->table('users')
-                    ->where("image", $filename)->count() <= 0);
-
-
-            while(!$isUnique) {
-                $filename = Nette\Utils\Random::generate(15);
-                $filename = $filename . ".png";
-
-                $isUnique = ($this->database->table('users')
-                        ->where("img_filename", $filename)->count() <= 0);
-            }
-
-            $file->move("images/".$filename);
-
-            $this->userManager->add($values->username, $values->email, $values->password, $values->surname, $values->lastname, $values->aboutme, $values->image);
-
+            $this->userManager->add($values->email, $values->password, $values->surname, $values->lastname);
 
             $form->getPresenter()->flashMessage('Byl jste úspěšně zaregistrován', 'success');
             $form->getPresenter()->redirect('Sign:in');
+
         }
         else
         {
+
             $form->getPresenter()->flashMessage('Nebyl jste zaregistrován kvůli chybě. Zkuste to znovu později. ', 'danger');
             $form->getPresenter()->redirect('this');
+
         }
     }
 
@@ -95,7 +69,7 @@ class SignPresenter extends BasePresenter
     {
 
         $form = new UI\Form;
-        $form->addText('username', 'Jméno: ')
+        $form->addText('email', 'E-mail: ')
             ->setRequired('Zadejte prosím jméno');
         $form->addPassword('password','Heslo:')
             ->setRequired('Zadejte prosím heslo');
@@ -107,7 +81,7 @@ class SignPresenter extends BasePresenter
     public function loginSuccess($form, $values)
     {
         try{
-            $this->user->login($values->username, $values->password);
+            $this->user->login($values->email, $values->password);
             $form->getPresenter()->flashMessage('Úspěšné přihlášení','success');
             $form->getPresenter()->redirect('Homepage:default');
         }

@@ -1,0 +1,24 @@
+{block content}
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-8 col-md-offset-2">
+                <h1>Přidat novou kategorii</h1>
+
+                <form n:name="addCategory" action="" method="POST">
+
+                    <div class="form-group">
+                        <label for="slug">Název kategorie <span class="require">*</span></label>
+                        <input type="text" class="form-control" n:name="name" />
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" n:name="submit" class="btn btn-primary">Přidat kategorii</button>
+                        <a class="btn btn-primary" n:href="Homepage:default">Jít zpět</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>

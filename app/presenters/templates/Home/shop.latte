@@ -3,12 +3,24 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-3">
-            <h1 class="my-4 text-center">Logo</h1>
+            <h1 class="my-4 text-center">Logo
+            {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
+                <a type="button" id="newcategory" class="btn btn-primary ribbon text-center" n:href="Category:add">Přidat kategorii</a>
+            {/if}</h1>
             <div class="list-group">
-                {foreach $category as $categories}
-                <a href="#" class="list-group-item text-center">První kategorie</a>
+                    {foreach $categories as $category}
+                        {if $category['categoriesCount'] == 0}
+                            <a style="color: red" href="#" class="list-group-item text-center">Žádná kategorie není momentálně k dispozici, zkuste to později.</a>
+                        {elseif $category['categoriesCount'] == 1}
+                            <a href="#" class="list-group-item text-center">{$category['category']->category_name}</a>
+                            <a n:href="deleteCategory!, 'categoryid' => $category['category']->category_id" onClick="return confirm('Opravdu chceš smazat tuto kategorii?');" type="button" class="btn-remove btn btn-danger btn-xs"> Smazat kategorii "{$category['category']->category_name}"</a>
+                        {else}
+                            <a href="#" class="list-group-item text-center">{$category['category']->category_name}</a>
+                            <a n:href="deleteCategory!, 'categoryid' => $category['category']->category_id" onClick="return confirm('Opravdu chceš smazat tuto kategorii?');" type="button" class="btn-remove btn btn-danger btn-xs"> Smazat kategorii "{$category['category']->category_name}"</a>
+                        {/if}
                 {/foreach}
-                <a type="button" id="newcategory" class="btn btn-primary ribbon" n:href="Category:add">Přidat kategorii</a>
+
+
             </div>
         </div>
         <div class="col-lg-9">

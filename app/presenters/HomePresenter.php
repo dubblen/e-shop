@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Presenters;
+
+use Nette;
+use App\Forms;
+use Nette\Application\UI\Form;
+use Nette\Application\UI;
+use Nette\Database\Context;
+use Nette\Security\Passwords;
+use Nette\Security\User;
+use Tracy\Debugger;
+use App\Model\UserManager;
+use Nette\Utils\DateTime;
+use Nette\Http\Session;
+
+class HomePresenter extends BasePresenter
+{
+    private $database;
+
+    public function __construct(Context $database)
+    {
+        $this->database = $database;
+    }
+
+    public function renderShop()
+    {
+            $categories = $this->database->table("categories");
+            $categoriesArray = [];
+            foreach ($categories as $category) {
+                $categoriesArray[$category->category_id] = [
+                    'db' => $categories,
+                    'category' => $this->database->table('categories')->get($category->category_id),
+                    'categoriesCount' => $this->database->table("categories")->count()
+                ];
+            }
+            $this->template->categories = $categoriesArray;
+    }
+
+    public function handleDeleteCategory($categoryid)
+    {
+        $this->database->table("categories")->get($categoryid)->delete();
+        $this->flashMessage('Kategorie byla odstraněna.', 'block');
+        $this->redirect('this');
+    }
+
+}

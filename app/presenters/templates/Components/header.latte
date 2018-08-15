@@ -22,7 +22,15 @@
 			<ul class="navbar-nav ml-auto">
                 {if $user->isLoggedIn()}
 					<li class="nav-item active">
-						<a class="nav-link">Přihlášen jako: {$user->getIdentity()->user_name}</a>
+						{if $user->getIdentity()->role == "user"}
+							<a class="nav-link">Přihlášen jako: <span style="color: #7ffcff">{$user->getIdentity()->first_name}  {$user->getIdentity()->last_name}</span></a>
+						{elseif $user->getIdentity()->role == "admin"}
+							<a class="nav-link">Přihlášen jako: <span style="color: #7ffcff">{$user->getIdentity()->first_name}  {$user->getIdentity()->last_name}</span> - <span style="color: #8cff00"> ADMIN </span></a>
+                        {elseif $user->getIdentity()->role == "owner"}
+							<a class="nav-link">Přihlášen jako: <span style="color: #7ffcff">{$user->getIdentity()->first_name}  {$user->getIdentity()->last_name}</span> - <span style="color: #fff815"> OWNER </span></a>
+						{else}
+							<a class="nav-link"><span style="color: #ff0202">Problém s opravněním účtu!</span></a>
+                        {/if}
 					</li>
 					<li class="nav-item active">
 						<a class="nav-link" n:href="Sign:out">Odhlásit</a>

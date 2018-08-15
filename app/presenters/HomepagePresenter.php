@@ -2,13 +2,13 @@
 
 namespace App\Presenters;
 
-use Nette;
-
+use Nette\Database\Context;
 
 class HomepagePresenter extends BasePresenter
 {
     public function renderDefault()
     {
-        $this->template->anyVariable = 'any value';
+        $this->redirect("Home:shop");
     }
+
 }

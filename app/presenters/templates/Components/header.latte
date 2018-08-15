@@ -1,37 +1,41 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand" href="#">E-shop</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
-	<div class="collapse navbar-collapse" id="navbarText">
-		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active">
-				<a class="nav-link" href="#">Domovská stránka <span class="sr-only"></span></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Služby</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Kontakt</a>
-			</li>
-		</ul>
-		<ul class="navbar-nav ml-auto">
-			{if $user->isLoggedIn()}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+	<div class="container">
+		<a class="navbar-brand" href="#">E-shop</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav ml-auto">
 				<li class="nav-item active">
-					<a class="nav-link">Přihlášen jako: {$user->getIdentity()->user_name}</a>
+					<a class="nav-link" n:href=Homepage:default">Domovská stránka <span class="sr-only"></span></a>
 				</li>
-				<li class="nav-item active">
-					<a class="nav-link" n:href="Sign:out">Odhlásit</a>
+				<li class="nav-item">
+					<a class="nav-link" href="#">O nás</a>
 				</li>
-			{else}
-				<li class="nav-item active">
-					<a class="nav-link" n:href="Sign:up">Registrovat</a>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Služby</a>
 				</li>
-				<li class="nav-item active">
-					<a class="nav-link" n:href="Sign:in">Přihlásit</a>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Kontakt</a>
 				</li>
-			{/if}
-
-		</ul>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+                {if $user->isLoggedIn()}
+					<li class="nav-item active">
+						<a class="nav-link">Přihlášen jako: {$user->getIdentity()->user_name}</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" n:href="Sign:out">Odhlásit</a>
+					</li>
+                {else}
+					<li class="nav-item active">
+						<a class="nav-link" n:href="Sign:up">Registrovat</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" n:href="Sign:in">Přihlásit</a>
+					</li>
+                {/if}
+			</ul>
+		</div>
 	</div>
 </nav>

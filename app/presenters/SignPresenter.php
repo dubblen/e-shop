@@ -83,7 +83,7 @@ class SignPresenter extends BasePresenter
         try{
             $this->user->login($values->email, $values->password);
             $form->getPresenter()->flashMessage('Úspěšné přihlášení','success');
-            $form->getPresenter()->redirect('Homepage:default');
+            $form->getPresenter()->redirect('Shop:page');
         }
         catch (Security\AuthenticationException $e){
             $this->flashMessage($e->getMessage(), 'warning');

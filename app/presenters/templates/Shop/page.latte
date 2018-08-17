@@ -1,0 +1,63 @@
+{block content}
+<div class="container">
+    <header class="jumbotron my-4">
+        <h1 class="display-3">Vítáme Vás v našem e-shopu!</h1>
+        <p class="lead">Najdete zde různé druhy zboží od oblečení, až po elektroniku a mnoho dalšího za <b>bezkonkurenční ceny</b>.</p>
+        <a n:href="Shop:category, 'categoryid' => $first_category" class="btn btn-primary btn-lg">Kategorie zboží</a>
+    </header>
+
+    <div class="row text-center">
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+            <img class="card-img-top" src="{$basePath}/images/slevy.jpg" alt="">
+            <div class="card-body">
+                <h4 class="card-title">Bezkonkurenční ceny</h4>
+                <p class="card-text">V našem e-shopu nabízíme veškteré zboží za ty nejlepší ceny. Koukněte se sami.</p>
+            </div>
+            <div class="card-footer">
+                <a n:href="Shop:category" class="btn btn-primary">Prohlédnout zboží!</a>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+                <img class="card-img-top" src="{$basePath}/images/spolehlivost.jpg">
+                <div class="card-body">
+                    <h4 class="card-title">Spolehlivost</h4>
+                    <p class="card-text">Tisíce našich zákazníku je spokojených se svou objednávkou v našem e-shopu.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Recenze zboží!</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+                <img class="card-img-top" src="{$basePath}/images/vraceni.jpg">
+                <div class="card-body">
+                    <h4 class="card-title">Možnost vrácení zboží</h4>
+                    <p class="card-text">Během 14 dnů od uzavření objednávky máte možnost vrácení zboží bez udání důvodu.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Zjistit více!</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+                <img class="card-img-top" src="{$basePath}/images/personal.png">
+                <div class="card-body">
+                    <h4 class="card-title">Zkušený personál</h4>
+                    <p class="card-text">Zkušený personál Vám vždy poradí při výběru zboží, stačí nám napsat.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Poradit se s profesionálem!</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -17,7 +17,8 @@ class CategoryPresenter extends BasePresenter
 
     public function renderAdd()
     {
-
+        $first_category = $this->database->table("categories")->min("category_id");
+        $this->template->first_category = $first_category;
     }
 
     protected function createComponentAddCategory()
@@ -39,7 +40,7 @@ class CategoryPresenter extends BasePresenter
         ]);
 
         $this->flashMessage('Kategorie byla úspěšně přidán.');
-        $this->redirect('Homepage:default');
+        $this->redirect('Shop:category');
     }
 
 }

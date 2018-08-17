@@ -8,7 +8,7 @@ class HomepagePresenter extends BasePresenter
 {
     public function renderDefault()
     {
-        $this->redirect("Home:shop");
+        $this->redirect("Shop:shop");
     }
 
 }

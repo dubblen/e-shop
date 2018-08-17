@@ -1,0 +1,63 @@
+{**
+ * @param string   $basePath web base path
+ * @param array    $flashes  flash messages
+ *}
+{block content}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Moje forum</title>
+        <style>
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-8 col-md-offset-2">
+                <h1>Přidat zboží</h1>
+
+                <form n:name="addItem" action="" method="POST">
+
+                    <div class="form-group">
+                        <label for="slug">Název zboží <span class="require">*</span></label>
+                        <input type="text" class="form-control" n:name="name" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Popis náhledu zboží</label>
+                        <input class="form-control" n:name="description" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Cena zboží</label>
+                        <input class="form-control" n:name="price" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Detailní popis zboží<span class="require">*</span></label>
+                        <textarea rows="5" class="form-control" n:name="content" ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <p><span class="require">*</span> - nutné informace</p>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" n:name="submit" class="btn btn-primary">
+                            Přidat zboží
+                        </button>
+                    <a class="btn btn-default" n:href="Shop:category, 'categoryid' => $categoryid" >
+                        Jít zpět
+                    </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    </body>
+    </html>
+{/block}

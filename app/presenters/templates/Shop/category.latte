@@ -63,24 +63,54 @@
                 </a>
             </div>
             <div class="row">
-
+                {foreach $items as $item}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
                         <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
                         <div class="card-body">
                             <h4 class="card-title">
-                                <a href="#">Item One</a>
+                                <a n:href="Shop:item, 'itemid' => $item['item']->item_id">{$item['item']->item_name}</a>
                             </h4>
-                            <h5>$24.99</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+                            <h5 style="color: red;">{$item['item']->item_price},- Kč</h5>
+                            <p class="card-text">{$item['item']->item_description}</p>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                            {if $item['item']->item_score == NULL}
+                                <small class="text-muted">&#9734; &#9734; &#9734; &#9734; &#9734;</small>
+                            {elseif $item['item']->item_score == 1}
+                                <small class="text-muted">&#9733; &#9734; &#9734; &#9734; &#9734;</small>
+                            {elseif $item['item']->item_score == 2}
+                                <small class="text-muted">&#9733; &#9733; &#9734; &#9734; &#9734;</small>
+                            {elseif $item['item']->item_score == 3}
+                                <small class="text-muted">&#9733; &#9733; &#9733; &#9734; &#9734;</small>
+                            {elseif $item['item']->item_score == 4}
+                                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                            {else}
+                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9733;</small>
+                            {/if}
                         </div>
                     </div>
                 </div>
+                {/foreach}
 
-                <div class="col-lg-4 col-md-6 mb-4">
+                {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a n:href="Shop:addItem, 'categoryid' => $categoryid"> Přidat nové zboží</a>
+                                </h4>
+                                <h5 style="color: red;">Cena</h5>
+                                <p class="card-text">Základní popis zboží</p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">Hodnocení</small>
+                            </div>
+                        </div>
+                {/if}
+
+                {*<div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
                         <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
                         <div class="card-body">
@@ -158,7 +188,7 @@
                             <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
                         </div>
                     </div>
-                </div>
+                </div>*}
 
             </div>
         </div>

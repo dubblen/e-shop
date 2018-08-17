@@ -56,6 +56,21 @@ class ShopPresenter extends BasePresenter
 
     }
 
+    public function renderEmptyCategory()
+    {
+        $categories = $this->database->table("categories");
+        $categoriesArray = [];
+        foreach ($categories as $category) {
+            $categoriesArray[$category->category_id] = [
+                'db' => $categories,
+                'category' => $this->database->table('categories')->get($category->category_id),
+                'categoriesCount' => $this->database->table("categories")->count()
+            ];
+        }
+        $this->template->categories = $categoriesArray;
+
+    }
+
     public function handleDeleteCategory($categoryid)
     {
         $first_category = $this->database->table("categories")->min("category_id");

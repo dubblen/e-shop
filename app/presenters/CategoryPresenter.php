@@ -39,8 +39,10 @@ class CategoryPresenter extends BasePresenter
             'category_name'=> $values->name
         ]);
 
+        $first_category = $this->database->table("categories")->min("category_id");
+
         $this->flashMessage('Kategorie byla úspěšně přidán.');
-        $this->redirect('Shop:category');
+        $this->redirect('Shop:category', array('categoryid' => $first_category));
     }
 
 }

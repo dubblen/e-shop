@@ -4,28 +4,32 @@
     <div class="row">
         <div class="col-lg-3">
             <h1 class="my-4 text-center">Logo
-            {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
-                <a type="button" id="newcategory" class="btn btn-primary ribbon text-center" n:href="Category:add">Přidat kategorii</a>
-            {/if}</h1>
+                {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
+                    <a type="button" id="newcategory" class="btn btn-primary ribbon text-center" n:href="Category:add">Přidat kategorii</a>
+                {/if}</h1>
             <div class="list-group">
-                    {foreach $categories as $category}
-                        {if $category['categoriesCount'] == 0}
-                            <a style="color: red" href="#" class="list-group-item text-center">Žádná kategorie není momentálně k dispozici, zkuste to později.</a>
-                        {elseif $category['categoriesCount'] == 1}
+                {foreach $categories as $category}
+                    {if $category['categoriesCount'] == 0}
+                        <a style="color: red" href="#" class="list-group-item text-center">Žádná kategorie není momentálně k dispozici, zkuste to později.</a>
+                    {elseif $category['categoriesCount'] == 1}
+                        {if $categoryid == $category['category']->category_id}
                             <b><a style="background-color: #dbdbdb" n:href="Shop:category, 'categoryid' => $category['category']->category_id"class="list-group-item text-center">{$category['category']->category_name}</a></b>
-                            {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
-                                <a n:href="deleteCategory!, 'categoryid' => $category['category']->category_id" onClick="return confirm('Opravdu chceš smazat tuto kategorii?');" type="button" class="btn-remove btn btn-danger btn-xs"> Smazat kategorii "{$category['category']->category_name}"</a>
-                            {/if}
                         {else}
-                            {if $categoryid == $category['category']->category_id}
-                                <b><a style="background-color: #dbdbdb" n:href="Shop:category, 'categoryid' => $category['category']->category_id"class="list-group-item text-center">{$category['category']->category_name}</a></b>
-                            {else}
-                                <a n:href="Shop:category, 'categoryid' => $category['category']->category_id" class="list-group-item text-center">{$category['category']->category_name}</a>
-                            {/if}
-                            {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
-                                <a n:href="deleteCategory!, 'categoryid' => $category['category']->category_id" onClick="return confirm('Opravdu chceš smazat tuto kategorii?');" type="button" class="btn-remove btn btn-danger btn-xs"> Smazat kategorii "{$category['category']->category_name}"</a>
-                            {/if}
+                            <a n:href="Shop:category, 'categoryid' => $category['category']->category_id" class="list-group-item text-center">{$category['category']->category_name}</a>
                         {/if}
+                        {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
+                            <a n:href="deleteCategory!, 'categoryid' => $category['category']->category_id" onClick="return confirm('Opravdu chceš smazat tuto kategorii?');" type="button" class="btn-remove btn btn-danger btn-xs"> Smazat kategorii "{$category['category']->category_name}"</a>
+                        {/if}
+                    {else}
+                        {if $categoryid == $category['category']->category_id}
+                            <b><a style="background-color: #dbdbdb" n:href="Shop:category, 'categoryid' => $category['category']->category_id"class="list-group-item text-center">{$category['category']->category_name}</a></b>
+                        {else}
+                            <a n:href="Shop:category, 'categoryid' => $category['category']->category_id" class="list-group-item text-center">{$category['category']->category_name}</a>
+                        {/if}
+                        {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
+                            <a n:href="deleteCategory!, 'categoryid' => $category['category']->category_id" onClick="return confirm('Opravdu chceš smazat tuto kategorii?');" type="button" class="btn-remove btn btn-danger btn-xs"> Smazat kategorii "{$category['category']->category_name}"</a>
+                        {/if}
+                    {/if}
                 {/foreach}
 
 
@@ -40,13 +44,13 @@
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active">
-                        <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="First slide">
+                        <img class="d-block img-fluid" src="{$basePath}/images/ceny.jpg" alt="Second slide">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Second slide">
+                        <img class="d-block img-fluid" src="{$basePath}/images/garance.png" alt="Third slide">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
+                        <img class="d-block img-fluid" src="{$basePath}/images/cas.jpg" alt="First slide">
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">

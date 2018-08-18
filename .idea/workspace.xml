@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eff3bff5-5f5e-4d6f-bf34-46957141ac68" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/presenters/templates/Shop/addReview.latte" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/presenters/CategoryPresenter.php" afterPath="$PROJECT_DIR$/app/presenters/CategoryPresenter.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/presenters/ShopPresenter.php" afterPath="$PROJECT_DIR$/app/presenters/ShopPresenter.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/presenters/templates/Shop/category.latte" afterPath="$PROJECT_DIR$/app/presenters/templates/Shop/category.latte" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/presenters/templates/Shop/item.latte" afterPath="$PROJECT_DIR$/app/presenters/templates/Shop/item.latte" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/css/homepage.css" afterPath="$PROJECT_DIR$/www/css/homepage.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/main.js" afterPath="$PROJECT_DIR$/www/js/main.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,11 +40,32 @@
       <file leaf-file-name="item.latte" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/presenters/templates/Shop/item.latte">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="603">
-              <caret line="75" column="91" lean-forward="false" selection-start-line="75" selection-start-column="91" selection-end-line="75" selection-end-column="91" />
+            <state relative-caret-position="331">
+              <caret line="71" column="52" lean-forward="false" selection-start-line="71" selection-start-column="52" selection-end-line="71" selection-end-column="52" />
               <folding>
-                <element signature="n#style#0;n#span#0;n#small#1;n#div#1;n#div#1;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#0;n#div#1;n#div#1;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#small#0;n#div#1;n#div#1;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ShopPresenter.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/presenters/ShopPresenter.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="141" column="72" lean-forward="false" selection-start-line="141" selection-start-column="72" selection-end-line="141" selection-end-column="72" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CategoryPresenter.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/presenters/CategoryPresenter.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="236">
+              <caret line="22" column="8" lean-forward="true" selection-start-line="22" selection-start-column="8" selection-end-line="30" selection-end-column="9" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -78,18 +95,8 @@
       <file leaf-file-name="page.latte" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/presenters/templates/Shop/page.latte">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-81">
+            <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ShopPresenter.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/presenters/ShopPresenter.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1081">
-              <caret line="113" column="79" lean-forward="false" selection-start-line="113" selection-start-column="79" selection-end-line="113" selection-end-column="79" />
               <folding />
             </state>
           </provider>
@@ -129,6 +136,7 @@
         <option value="$PROJECT_DIR$/app/presenters/templates/Shop/addReview.latte" />
         <option value="$PROJECT_DIR$/app/presenters/templates/Shop/category.latte" />
         <option value="$PROJECT_DIR$/app/presenters/templates/Shop/item.latte" />
+        <option value="$PROJECT_DIR$/app/presenters/CategoryPresenter.php" />
         <option value="$PROJECT_DIR$/app/presenters/ShopPresenter.php" />
       </list>
     </option>
@@ -283,12 +291,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1534511477967</updated>
-      <workItem from="1534511479396" duration="9617000" />
+      <workItem from="1534511479396" duration="12089000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9617000" />
+    <option name="totallyTimeSpent" value="12089000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -348,24 +356,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/presenters/templates/Shop/category.latte">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1275">
-          <caret line="85" column="66" lean-forward="false" selection-start-line="85" selection-start-column="66" selection-end-line="85" selection-end-column="66" />
-          <folding>
-            <element signature="n#style#0;n#h5#0;n#div#0;n#div#0;n#div#1;n#div#1;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../startbootstrap-shop-item-gh-pages/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="381">
-          <caret line="88" column="69" lean-forward="true" selection-start-line="88" selection-start-column="40" selection-end-line="88" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/presenters/templates/Shop/addReview.latte">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4">
@@ -382,14 +372,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/presenters/templates/Shop/page.latte">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-81">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/presenters/templates/Components/header.latte">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
@@ -400,20 +382,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../startbootstrap-shop-item-gh-pages/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="381">
+          <caret line="88" column="69" lean-forward="true" selection-start-line="88" selection-start-column="40" selection-end-line="88" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/presenters/templates/Shop/page.latte">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/presenters/templates/Shop/category.latte">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="85" column="66" lean-forward="false" selection-start-line="85" selection-start-column="66" selection-end-line="85" selection-end-column="66" />
+          <folding>
+            <element signature="n#style#0;n#h5#0;n#div#0;n#div#0;n#div#1;n#div#1;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/presenters/templates/Shop/item.latte">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="603">
-          <caret line="75" column="91" lean-forward="false" selection-start-line="75" selection-start-column="91" selection-end-line="75" selection-end-column="91" />
+        <state relative-caret-position="331">
+          <caret line="71" column="52" lean-forward="false" selection-start-line="71" selection-start-column="52" selection-end-line="71" selection-end-column="52" />
           <folding>
-            <element signature="n#style#0;n#span#0;n#small#1;n#div#1;n#div#1;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#div#1;n#div#1;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#small#0;n#div#1;n#div#1;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/presenters/CategoryPresenter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="22" column="8" lean-forward="true" selection-start-line="22" selection-start-column="8" selection-end-line="30" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/presenters/ShopPresenter.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1081">
-          <caret line="113" column="79" lean-forward="false" selection-start-line="113" selection-start-column="79" selection-end-line="113" selection-end-column="79" />
+        <state relative-caret-position="286">
+          <caret line="141" column="72" lean-forward="false" selection-start-line="141" selection-start-column="72" selection-end-line="141" selection-end-column="72" />
           <folding />
         </state>
       </provider>

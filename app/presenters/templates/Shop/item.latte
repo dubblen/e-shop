@@ -69,14 +69,29 @@
                 <div class="card-body">
                     {foreach $reviews as $review}
                         {if $review['review']->review_content == NULL}
-                            <small><p>Bez podrobnějšího hodnocení.</p></small>
+                            <p style="color: #8c8c8c">Bez podrobnějšího hodnocení.</p>
                         {else}
                             <p>{$review['review']->review_content}</p>
+                        {/if}
+                        {if $review['review']->item_evaluation == 1}
+                            <big class="text-muted">&#9733; &#9734; &#9734; &#9734; &#9734;</big><br>
+                        {elseif $review['review']->item_evaluation == 2}
+                            <big class="text-muted">&#9733; &#9733; &#9734; &#9734; &#9734;</big><br>
+                        {elseif $review['review']->item_evaluation == 3}
+                            <big class="text-muted">&#9733; &#9733; &#9733; &#9734; &#9734;</big><br>
+                        {elseif $review['review']->item_evaluation == 4}
+                            <big class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</big><br>
+                        {else}
+                            <big class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9733;</big><br>
                         {/if}
                         <small class="text-muted">Hodnocení přidal <span style="color: blue">{$review['review']->review_author_name}</span> {$review['review']->date_created}</small>
                         <hr>
                     {/foreach}
-                    <a n:href="Shop:addReview, 'itemid' => $item->item_id" class="btn btn-success">Zanechat recenzi</a>
+                    {if $user_review == NULL}
+                        <a n:href="Shop:addReview, 'itemid' => $item->item_id" class="btn btn-success">Zanechat recenzi</a>
+                    {else}
+                        <a class="btn btn-warning">Už jste ponechal recenzi na toto zboží</a>
+                    {/if}
                 </div>
             </div>
 

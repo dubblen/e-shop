@@ -121,22 +121,43 @@ class ShopPresenter extends BasePresenter
             ];
         }
         $this->template->reviews = $reviewsArray;
+
+        $user_review = $this->database->table("reviews")->where('review_author_id = ? AND item_id = ?', $this->getUser()->getIdentity()->user_id, $itemid)->count();
+        $this->template->user_review = $user_review;
     }
 
     // Handle pro odstranění kategorie
     public function handleDeleteCategory($categoryid)
     {
-        $first_category = $this->database->table("categories")->min("category_id");
+        if  ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner")
+        {
+            $first_category = $this->database->table("categories")->min("category_id");
 
-        $this->database->table("categories")->get($categoryid)->delete();
-        $this->flashMessage('Kategorie byla odstraněna.', 'block');
-        $this->redirect('Shop:category', array('categoryid' => $first_category));
+            $this->database->table("categories")->get($categoryid)->delete();
+            $this->flashMessage('Kategorie byla odstraněna.', 'block');
+            $this->redirect('Shop:category', array('categoryid' => $first_category));
+        }
+        else
+        {
+            $this->flashMessage('Nemáte dostatečné oprávnění na odebrání kategorie');
+            $this->redirect("Shop:emptyCategory");
+        }
     }
 
     // Přidání nového zboží a render formu s přidáním zboží
     public function renderAddItem($categoryid)
     {
         $this->template->categoryid = $categoryid;
+
+        if  ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner")
+        {
+
+        }
+        else
+        {
+            $this->flashMessage('Nemáte dostatečné oprávnění na přidání zboží');
+            $this->redirect("Shop:emptyCategory");
+        }
     }
 
     protected function createComponentAddItem()
@@ -175,6 +196,14 @@ class ShopPresenter extends BasePresenter
     public function renderAddReview($itemid)
     {
         $this->template->itemid = $itemid;
+
+        $user_review = $this->database->table("reviews")->where('review_author_id = ? AND item_id = ?', $this->getUser()->getIdentity()->user_id, $itemid)->count();
+
+        if ($user_review >= 1)
+        {
+            $this->flashMessage('Již jste přidal hodnocení produktu, tudíž nemůžete přidat další.');
+            $this->redirect("Shop:item", array("itemid" => $itemid));
+        }
     }
 
     protected function createComponentAddReview()

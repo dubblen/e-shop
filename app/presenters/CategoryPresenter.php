@@ -19,6 +19,16 @@ class CategoryPresenter extends BasePresenter
     {
         $first_category = $this->database->table("categories")->min("category_id");
         $this->template->first_category = $first_category;
+
+        if  ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner")
+        {
+
+        }
+        else
+        {
+            $this->flashMessage('Nemáte dostatečné oprávnění na přidání kategorie');
+            $this->redirect("Shop:emptyCategory");
+        }
     }
 
     protected function createComponentAddCategory()

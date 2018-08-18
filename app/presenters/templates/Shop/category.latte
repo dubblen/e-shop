@@ -75,15 +75,15 @@
                             <p class="card-text">{$item['item']->item_description}</p>
                         </div>
                         <div class="card-footer">
-                            {if $item['item']->item_score == NULL}
+                            {if $item['item']->item_evaluation == NULL}
                                 <small class="text-muted">&#9734; &#9734; &#9734; &#9734; &#9734;</small>
-                            {elseif $item['item']->item_score == 1}
+                            {elseif $item['item']->item_evaluation == 1}
                                 <small class="text-muted">&#9733; &#9734; &#9734; &#9734; &#9734;</small>
-                            {elseif $item['item']->item_score == 2}
+                            {elseif $item['item']->item_evaluation == 2}
                                 <small class="text-muted">&#9733; &#9733; &#9734; &#9734; &#9734;</small>
-                            {elseif $item['item']->item_score == 3}
+                            {elseif $item['item']->item_evaluation == 3}
                                 <small class="text-muted">&#9733; &#9733; &#9733; &#9734; &#9734;</small>
-                            {elseif $item['item']->item_score == 4}
+                            {elseif $item['item']->item_evaluation == 4}
                                 <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
                             {else}
                             <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9733;</small>

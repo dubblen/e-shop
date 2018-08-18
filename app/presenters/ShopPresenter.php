@@ -83,7 +83,6 @@ class ShopPresenter extends BasePresenter
 
     public function renderItem($itemid)
     {
-
         $categories = $this->database->table("categories");
         $categoriesArray = [];
         foreach ($categories as $category) {
@@ -97,8 +96,34 @@ class ShopPresenter extends BasePresenter
 
         $item = $this->database->table("items")->where("item_id", $itemid)->fetch();
         $this->template->item = $item;
+
+        $item_evaluation_number = $this->database->table("reviews")->where("item_id", $itemid)->Count();
+        if ($item_evaluation_number >= 1)
+        {
+            $item_evaluations = $this->database->table("reviews")->where("item_id", $itemid)->sum("item_evaluation");
+            $item_final_evaluation = $item_evaluations / $item_evaluation_number;
+
+            $this->template->evaluation = $item_final_evaluation;
+
+            $this->database->table("items")->where("item_id", $itemid)->update([
+
+                'item_evaluation'=> $item_final_evaluation,
+            ]);
+        }
+
+        $reviews = $this->database->table("reviews")->where("item_id", $itemid);
+        $reviewsArray = [];
+        foreach ($reviews as $review) {
+            $reviewsArray[$review->review_id] = [
+                'db' => $reviews,
+                'review' => $this->database->table('reviews')->get($review->review_id),
+                'reviewsCount' => $this->database->table("reviews")->count()
+            ];
+        }
+        $this->template->reviews = $reviewsArray;
     }
 
+    // Handle pro odstranění kategorie
     public function handleDeleteCategory($categoryid)
     {
         $first_category = $this->database->table("categories")->min("category_id");
@@ -108,6 +133,7 @@ class ShopPresenter extends BasePresenter
         $this->redirect('Shop:category', array('categoryid' => $first_category));
     }
 
+    // Přidání nového zboží a render formu s přidáním zboží
     public function renderAddItem($categoryid)
     {
         $this->template->categoryid = $categoryid;
@@ -143,6 +169,61 @@ class ShopPresenter extends BasePresenter
 
         $this->flashMessage('Zboží bylo úspěšně přidáno.');
         $this->redirect('Shop:category', array("categoryid" => $this->getParameter('categoryid')));
+    }
+
+    // Přidání hodnocení příspěvku a render formu s přidáním příspěvku
+    public function renderAddReview($itemid)
+    {
+        $this->template->itemid = $itemid;
+    }
+
+    protected function createComponentAddReview()
+    {
+
+        $stars = [
+                'value1' => '1 hvězdička',
+                'value2' => '2 hvězdičky',
+                'value3' => '3 hvězdičky',
+                'value4' => '4 hvězdičky',
+                'value5' => '5 hvězdiček'
+        ];
+
+        $form = new Form;
+        $form->addText('content', 'Zkušenosti s produktem: ');
+        $form->addSelect('evaluation', 'Hodnocení produktu:')
+                ->setItems($stars, false);
+        $form->addSubmit('submit','Přidat hodnocení');
+        $form->onSuccess[] = [$this, 'AddReviewSuccess'];
+        return $form;
+    }
+
+    public function AddReviewSuccess($form, $values)
+    {
+        if ($values->content == NULL)
+        {
+            $this->database->table("reviews")->insert([
+                'item_id'=> $this->getParameter('itemid'),
+                'review_author_id'=>$this->getUser()->getIdentity()->user_id,
+                'review_author_name'=>$this->getUser()->getIdentity()->first_name,
+                'date_created'=>new DateTime,
+                'item_evaluation' => $values->evaluation
+            ]);
+        }
+        else
+        {
+            $this->database->table("reviews")->insert([
+                'item_id'=> $this->getParameter('itemid'),
+                'review_author_id'=>$this->getUser()->getIdentity()->user_id,
+                'review_author_name'=>$this->getUser()->getIdentity()->first_name,
+                'date_created'=>new DateTime,
+                'review_content' => $values->content,
+                'item_evaluation' => $values->evaluation
+            ]);
+        }
+
+
+        $this->flashMessage('Hodnocení produktu bylo úspěšně přidáno.');
+        $this->redirect('Shop:item', array("itemid" => $this->getParameter('itemid')));
     }
 
 }

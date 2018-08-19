@@ -13,6 +13,7 @@ use Tracy\Debugger;
 use App\Model\UserManager;
 use Nette\Utils\DateTime;
 use Nette\Http\Session;
+use Nette\Utils\Image;
 
 class ShopPresenter extends BasePresenter
 {
@@ -134,6 +135,7 @@ class ShopPresenter extends BasePresenter
             $first_category = $this->database->table("categories")->min("category_id");
 
             $this->database->table("categories")->get($categoryid)->delete();
+            $this->database->table("items")->where("category_id", $categoryid)->delete();
             $this->flashMessage('Kategorie byla odstraněna.', 'block');
             $this->redirect('Shop:category', array('categoryid' => $first_category));
         }
@@ -172,6 +174,7 @@ class ShopPresenter extends BasePresenter
             ->setRequired("Vyplňte prosím název zboží");
         $form->addText("content")
             ->setRequired("Vyplňte prosím detailní popis zboží");
+        $form->addUpload('image','Obrázek zboží: ');
         $form->addSubmit("submit");
         $form->onSuccess[] = [$this, 'addItemSuccess'];
         return $form;
@@ -179,12 +182,29 @@ class ShopPresenter extends BasePresenter
 
     public function AddItemSuccess($form, $values)
     {
-        $this->database->table("items")->insert([
+        $file = $values->image;
+        $file_ext=strtolower(mb_substr($file->getSanitizedName(), strrpos($file->getSanitizedName(), ".")));
+        $filename = Nette\Utils\Random::generate(15);
+        $filename = $filename . $file_ext;
+        $isUnique = ($this->database->table('items')->where("item_image", $filename)->count() <= 0);
+        while(!$isUnique) {
+            $filename = Nette\Utils\Random::generate(15);
+            $filename = $filename . ".jpg";
+            $isUnique = ($this->database->table('items')->where("item_image", $filename)->count() <= 0);
+        }
+        $file->move("images/items/".$filename);
 
+        $image = Image::fromFile("images/items/".$filename);
+        $image->resize(450, 400,  Image::STRETCH);
+        $image->save("images/items/".$filename);
+
+
+        $this->database->table("items")->insert([
             'item_name'=> $values->name,
-            'item_description'=>$values->description,
-            'item_price'=>$values->price,
-            'item_content'=>$values->content,
+            'item_description'=> $values->description,
+            'item_price'=> $values->price,
+            'item_content'=> $values->content,
+            'item_image' => $file,
             'category_id'=>$this->getParameter('categoryid')
         ]);
 

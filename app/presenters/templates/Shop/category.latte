@@ -66,7 +66,11 @@
                 {foreach $items as $item}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
+                        {if $item['item']->item_image == NULL}
                         <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                        {else}
+                        <a href="#"><img class="card-img-top" src="{$basePath}/{$item['item']->item_image}" alt=""></a>
+                        {/if}
                         <div class="card-body">
                             <h4 class="card-title">
                                 <a n:href="Shop:item, 'itemid' => $item['item']->item_id">{$item['item']->item_name}</a>

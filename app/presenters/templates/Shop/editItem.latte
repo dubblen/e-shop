@@ -1,0 +1,56 @@
+{**
+ * @param string   $basePath web base path
+ * @param array    $flashes  flash messages
+ *}
+{block content}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6 myoffset1">
+                <h1 style="text-align: center; padding-bottom: 2%">Upravit informace o produktu</h1>
+
+                <form n:name="editItem" action="" method="POST">
+
+                    <div class="form-group">
+                        <label for="slug">Název zboží</label>
+                        <input type="text" value="{$item->item_name}" class="form-control" n:name="name" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Popis náhledu zboží</label>
+                        <input value="{$item->item_description}" class="form-control" n:name="description" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Cena zboží</label>
+                        <input value="{$item->item_price}" class="form-control" n:name="price" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Detailní popis zboží</label>
+                        <textarea value="{$item->item_content}" rows="5" class="form-control" n:name="content" ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Obrázek produktu:</label>
+                        {if $item->item_image == "/images/default.png"}
+                            <label style="color: red" for="description">Zatím nebyl produktu přiřazen žádný obrázek.</label>
+                        {else}
+                            <img style="width: 25%; padding-bottom: 2%; height: auto" class="img-fluid" src="{$basePath}/{$item->item_image}"><br>
+                        {/if}
+                        <input style="height: auto; padding: auto; margin: auto" class="form-control" placeholder="" n:name=image type="file">
+                    </div>
+
+                    <div style="text-align: center" class="form-group">
+                        <button type="submit" n:name="submit" class="btn btn-primary">
+                            Upravit informace
+                        </button>
+                    <a class="btn btn-default" n:href="Shop:emptyCategory" >
+                        Jít zpět
+                    </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{/block}

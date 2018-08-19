@@ -16,6 +16,8 @@
 	<link rel="stylesheet" href="{$basePath}/css/welcome-page.css">
 	<link rel="stylesheet" href="{$basePath}/css/shop-item.css">
 	<link rel="stylesheet" href="{$basePath}/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="{$basePath}/bootstrap/css/bootstrap-grid.css">
+
 </head>
 <body>
 
@@ -23,7 +25,7 @@
     {include "Components/header.latte"}
 </header>
 
-<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+<div n:foreach="$flashes as $flash" class="flash-{$flash->type}">{$flash->message}</div>
 
 {include content}
 

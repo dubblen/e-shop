@@ -3,22 +3,10 @@
  * @param array    $flashes  flash messages
  *}
 {block content}
-
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Moje forum</title>
-        <style>
-        </style>
-    </head>
-    <body>
     <div class="container">
         <div class="row">
-
-            <div class="col-md-8 col-md-offset-2">
-                <h1>Přidat zboží</h1>
-
+            <div class="col-md-6 myoffset1">
+                <h1 style="text-align: center; padding-bottom: 2%">Přidat nový produkt</h1>
                 <form n:name="addItem" action="" method="POST">
 
                     <div class="form-group">
@@ -32,24 +20,24 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="description">Cena zboží</label>
+                        <label for="description">Cena zboží <span class="require">*</span></label>
                         <input class="form-control" n:name="price" >
                     </div>
 
                     <div class="form-group">
-                        <label for="description">Detailní popis zboží<span class="require">*</span></label>
-                        <textarea rows="5" class="form-control" n:name="content" ></textarea>
+                        <label for="description">Detailní popis zboží</label>
+                        <textarea rows="4" class="form-control" n:name="content" ></textarea>
                     </div>
 
                     <div class="form-group">
-                        <input class="form-control" placeholder="Vybrat obrázek" n:name=image type="file"><br>
+                        <input style="height: auto; padding: auto; margin: auto" class="form-control" placeholder="Vybrat obrázek" n:name=image type="file"><br>
                     </div>
 
-                    <div class="form-group">
-                        <p><span class="require">*</span> - nutné informace</p>
+                    <div style="margin-top: -5%; margin-bottom: 6%" class="form-group">
+                        <p style="color: red;"><span class="require">*</span> - nutné informace</p>
                     </div>
 
-                    <div class="form-group">
+                    <div style="text-align: center" class="form-group">
                         <button type="submit" n:name="submit" class="btn btn-primary">
                             Přidat zboží
                         </button>
@@ -59,7 +47,6 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
     </body>

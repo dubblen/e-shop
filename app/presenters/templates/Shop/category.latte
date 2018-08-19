@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-lg-3">
             <h1 class="my-4 text-center">Logo
-                {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
+                {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner" && $user->isLoggedIn()}
                     <a type="button" id="newcategory" class="btn btn-primary ribbon text-center" n:href="Category:add">Přidat kategorii</a>
                 {/if}</h1>
             <div class="list-group">
@@ -26,7 +26,7 @@
                         {else}
                             <a n:href="Shop:category, 'categoryid' => $category['category']->category_id" class="list-group-item text-center">{$category['category']->category_name}</a>
                         {/if}
-                        {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
+                        {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner" && $user->isLoggedIn()}
                             <a n:href="deleteCategory!, 'categoryid' => $category['category']->category_id" onClick="return confirm('Opravdu chceš smazat tuto kategorii?');" type="button" class="btn-remove btn btn-danger btn-xs"> Smazat kategorii "{$category['category']->category_name}"</a>
                         {/if}
                     {/if}
@@ -67,7 +67,7 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
                         {if $item['item']->item_image == NULL}
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                        <a href="#"><img class="card-img-top" src="http://placehold.it/450x400" alt=""></a>
                         {else}
                         <a href="#"><img class="card-img-top" src="{$basePath}/{$item['item']->item_image}" alt=""></a>
                         {/if}
@@ -93,106 +93,30 @@
                             <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9733;</small>
                             {/if}
                         </div>
+                        {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner" && $user->isLoggedIn()}
+                            <a n:href="editItem, 'itemid' => $item['item']->item_id, 'categoryid' => $categoryid" onClick="return confirm('Opravdu chceš upravit informace o tomto produktu?');" type="button" class="btn-remove btn btn-success btn-xs"> Upravit zboží</a>
+                            <a n:href="deleteItem!, 'itemid' => $item['item']->item_id" onClick="return confirm('Opravdu chceš smazat tento produkt? Tuto akci nemůžeš vrátit.');" type="button" class="btn-remove btn btn-danger btn-xs"> Smazat zboží</a>
+                        {/if}
                     </div>
                 </div>
                 {/foreach}
 
-                {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
+                {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner" && $user->isLoggedIn()}
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
-                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <a href="#"><img class="card-img-top" src="http://placehold.it/450x400" alt=""></a>
                             <div class="card-body">
                                 <h4 class="card-title">
-                                    <a n:href="Shop:addItem, 'categoryid' => $categoryid"> Přidat nové zboží</a>
+                                    <a n:href="Shop:addItem, 'categoryid' => $categoryid"> Přidat nový produkt</a>
                                 </h4>
                                 <h5 style="color: red;">Cena</h5>
-                                <p class="card-text">Základní popis zboží</p>
+                                <p class="card-text">Základní popis produktu</p>
                             </div>
                             <div class="card-footer">
                                 <small class="text-muted">Hodnocení</small>
                             </div>
                         </div>
                 {/if}
-
-                {*<div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Item Two</a>
-                            </h4>
-                            <h5>$24.99</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Item Three</a>
-                            </h4>
-                            <h5>$24.99</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Item Four</a>
-                            </h4>
-                            <h5>$24.99</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Item Five</a>
-                            </h4>
-                            <h5>$24.99</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Item Six</a>
-                            </h4>
-                            <h5>$24.99</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                        </div>
-                    </div>
-                </div>*}
 
             </div>
         </div>

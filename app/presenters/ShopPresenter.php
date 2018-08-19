@@ -30,15 +30,14 @@ class ShopPresenter extends BasePresenter
         $this->template->first_category = $first_category;
         $categories = $this->database->table("categories");
         $categoriesArray = [];
-        foreach ($categories as $category)
-        {
+        foreach ($categories as $category) {
             $categoriesArray[$category->category_id] = [
                 'db' => $categories,
                 'category' => $this->database->table('categories')->get($category->category_id),
                 'categoriesCount' => $this->database->table("categories")->count()
             ];
         }
-            $this->template->categories = $categoriesArray;
+        $this->template->categories = $categoriesArray;
     }
 
     public function renderCategory($categoryid)
@@ -99,8 +98,7 @@ class ShopPresenter extends BasePresenter
         $this->template->item = $item;
 
         $item_evaluation_number = $this->database->table("reviews")->where("item_id", $itemid)->Count();
-        if ($item_evaluation_number >= 1)
-        {
+        if ($item_evaluation_number >= 1) {
             $item_evaluations = $this->database->table("reviews")->where("item_id", $itemid)->sum("item_evaluation");
             $item_final_evaluation = $item_evaluations / $item_evaluation_number;
 
@@ -108,7 +106,7 @@ class ShopPresenter extends BasePresenter
 
             $this->database->table("items")->where("item_id", $itemid)->update([
 
-                'item_evaluation'=> $item_final_evaluation,
+                'item_evaluation' => $item_final_evaluation,
             ]);
         }
 
@@ -130,19 +128,37 @@ class ShopPresenter extends BasePresenter
     // Handle pro odstranění kategorie
     public function handleDeleteCategory($categoryid)
     {
-        if  ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner")
-        {
-            $first_category = $this->database->table("categories")->min("category_id");
-
-            $this->database->table("categories")->get($categoryid)->delete();
-            $this->database->table("items")->where("category_id", $categoryid)->delete();
-            $this->flashMessage('Kategorie byla odstraněna.', 'block');
-            $this->redirect('Shop:category', array('categoryid' => $first_category));
-        }
-        else
-        {
+        if ($this->getUser()->isLoggedIn()) {
+            if ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner") {
+                $this->database->table("categories")->get($categoryid)->delete();
+                $this->database->table("items")->where("category_id", $categoryid)->delete();
+                $this->flashMessage('Kategorie byla odstraněna.', 'block');
+                $this->redirect('Shop:emptyCategory');
+            } else {
+                $this->flashMessage('Nemáte dostatečné oprávnění na odebrání kategorie');
+                $this->redirect("Shop:emptyCategory");
+            }
+        } else {
             $this->flashMessage('Nemáte dostatečné oprávnění na odebrání kategorie');
             $this->redirect("Shop:emptyCategory");
+        }
+    }
+
+    // Handle pro odstranění zboží
+    public function handleDeleteItem($itemid, $categoryid)
+    {
+        if ($this->getUser()->isLoggedIn()) {
+            if ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner") {
+                $this->database->table("items")->where("item_id", $itemid)->delete();
+                $this->flashMessage('Produkt byl úspěšně odstraněn.', "success");
+                $this->redirect("Shop:category", array('categoryid' => $categoryid));
+            } else {
+                $this->flashMessage('Nemáte dostatečné oprávnění na odebrání produktu.', 'error');
+                $this->redirect("Shop:category", array('categoryid' => $categoryid));
+            }
+        } else {
+            $this->flashMessage('Nemáte dostatečné oprávnění na odebrání produktu.', 'error');
+            $this->redirect("Shop:category", array('categoryid' => $categoryid));
         }
     }
 
@@ -151,12 +167,14 @@ class ShopPresenter extends BasePresenter
     {
         $this->template->categoryid = $categoryid;
 
-        if  ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner")
-        {
+        if ($this->getUser()->isLoggedIn()) {
+            if ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner") {
 
-        }
-        else
-        {
+            } else {
+                $this->flashMessage('Nemáte dostatečné oprávnění na přidání zboží');
+                $this->redirect("Shop:emptyCategory");
+            }
+        } else {
             $this->flashMessage('Nemáte dostatečné oprávnění na přidání zboží');
             $this->redirect("Shop:emptyCategory");
         }
@@ -168,13 +186,11 @@ class ShopPresenter extends BasePresenter
         $form = new form;
         $form->addText("name")
             ->setRequired("Vyplňte prosím název zboží");
-        $form->addText("description")
-            ->setRequired("Vyplňte prosím popis náhledu zboží");
+        $form->addText("description");
         $form->addText("price")
             ->setRequired("Vyplňte prosím název zboží");
-        $form->addText("content")
-            ->setRequired("Vyplňte prosím detailní popis zboží");
-        $form->addUpload('image','Obrázek zboží: ');
+        $form->addText("content");
+        $form->addUpload('image', 'Obrázek zboží: ');
         $form->addSubmit("submit");
         $form->onSuccess[] = [$this, 'addItemSuccess'];
         return $form;
@@ -182,33 +198,47 @@ class ShopPresenter extends BasePresenter
 
     public function AddItemSuccess($form, $values)
     {
-        $file = $values->image;
-        $file_ext=strtolower(mb_substr($file->getSanitizedName(), strrpos($file->getSanitizedName(), ".")));
-        $filename = Nette\Utils\Random::generate(15);
-        $filename = $filename . $file_ext;
-        $isUnique = ($this->database->table('items')->where("item_image", $filename)->count() <= 0);
-        while(!$isUnique) {
+        if ($values->image->getSanitizedName() != NULL)
+        {
+            $file = $values->image;
+            $file_ext = strtolower(mb_substr($file->getSanitizedName(), strrpos($file->getSanitizedName(), ".")));
             $filename = Nette\Utils\Random::generate(15);
-            $filename = $filename . ".jpg";
+            $filename = $filename . $file_ext;
             $isUnique = ($this->database->table('items')->where("item_image", $filename)->count() <= 0);
+            while (!$isUnique) {
+                $filename = Nette\Utils\Random::generate(15);
+                $filename = $filename . ".jpg";
+                $isUnique = ($this->database->table('items')->where("item_image", $filename)->count() <= 0);
+            }
+            $file->move("images/items/" . $filename);
+
+            $image = Image::fromFile("images/items/" . $filename);
+            $image->resize(450, 400, Image::STRETCH);
+            $image->save("images/items/" . $filename);
+
+
+            $this->database->table("items")->insert([
+                'item_name' => $values->name,
+                'item_description' => $values->description,
+                'item_price' => $values->price,
+                'item_content' => $values->content,
+                'item_image' => $file,
+                'category_id' => $this->getParameter('categoryid')
+            ]);
         }
-        $file->move("images/items/".$filename);
+        else
+        {
+            $this->database->table("items")->insert([
+                'item_name' => $values->name,
+                'item_description' => $values->description,
+                'item_price' => $values->price,
+                'item_content' => $values->content,
+                'item_image' => "/images/default.png",
+                'category_id' => $this->getParameter('categoryid')
+            ]);
+        }
 
-        $image = Image::fromFile("images/items/".$filename);
-        $image->resize(450, 400,  Image::STRETCH);
-        $image->save("images/items/".$filename);
-
-
-        $this->database->table("items")->insert([
-            'item_name'=> $values->name,
-            'item_description'=> $values->description,
-            'item_price'=> $values->price,
-            'item_content'=> $values->content,
-            'item_image' => $file,
-            'category_id'=>$this->getParameter('categoryid')
-        ]);
-
-        $this->flashMessage('Zboží bylo úspěšně přidáno.');
+        $this->flashMessage('Zboží bylo úspěšně přidáno.', "success");
         $this->redirect('Shop:category', array("categoryid" => $this->getParameter('categoryid')));
     }
 
@@ -219,8 +249,7 @@ class ShopPresenter extends BasePresenter
 
         $user_review = $this->database->table("reviews")->where('review_author_id = ? AND item_id = ?', $this->getUser()->getIdentity()->user_id, $itemid)->count();
 
-        if ($user_review >= 1)
-        {
+        if ($user_review >= 1) {
             $this->flashMessage('Již jste přidal hodnocení produktu, tudíž nemůžete přidat další.');
             $this->redirect("Shop:item", array("itemid" => $itemid));
         }
@@ -230,41 +259,38 @@ class ShopPresenter extends BasePresenter
     {
 
         $stars = [
-                'value1' => '1 hvězdička',
-                'value2' => '2 hvězdičky',
-                'value3' => '3 hvězdičky',
-                'value4' => '4 hvězdičky',
-                'value5' => '5 hvězdiček'
+            'value1' => '1 hvězdička',
+            'value2' => '2 hvězdičky',
+            'value3' => '3 hvězdičky',
+            'value4' => '4 hvězdičky',
+            'value5' => '5 hvězdiček'
         ];
 
         $form = new Form;
         $form->addText('content', 'Zkušenosti s produktem: ');
         $form->addSelect('evaluation', 'Hodnocení produktu:')
-                ->setItems($stars, false);
-        $form->addSubmit('submit','Přidat hodnocení');
+            ->setItems($stars, false);
+        $form->addSubmit('submit', 'Přidat hodnocení');
         $form->onSuccess[] = [$this, 'AddReviewSuccess'];
         return $form;
     }
 
     public function AddReviewSuccess($form, $values)
     {
-        if ($values->content == NULL)
-        {
+        if ($values->content == NULL) {
             $this->database->table("reviews")->insert([
-                'item_id'=> $this->getParameter('itemid'),
-                'review_author_id'=>$this->getUser()->getIdentity()->user_id,
-                'review_author_name'=>$this->getUser()->getIdentity()->first_name,
-                'date_created'=>new DateTime,
+                'item_id' => $this->getParameter('itemid'),
+                'review_author_id' => $this->getUser()->getIdentity()->user_id,
+                'review_author_name' => $this->getUser()->getIdentity()->first_name,
+                'date_created' => new DateTime,
                 'item_evaluation' => $values->evaluation
             ]);
-        }
-        else
-        {
+        } else {
             $this->database->table("reviews")->insert([
-                'item_id'=> $this->getParameter('itemid'),
-                'review_author_id'=>$this->getUser()->getIdentity()->user_id,
-                'review_author_name'=>$this->getUser()->getIdentity()->first_name,
-                'date_created'=>new DateTime,
+                'item_id' => $this->getParameter('itemid'),
+                'review_author_id' => $this->getUser()->getIdentity()->user_id,
+                'review_author_name' => $this->getUser()->getIdentity()->first_name,
+                'date_created' => new DateTime,
                 'review_content' => $values->content,
                 'item_evaluation' => $values->evaluation
             ]);
@@ -275,4 +301,85 @@ class ShopPresenter extends BasePresenter
         $this->redirect('Shop:item', array("itemid" => $this->getParameter('itemid')));
     }
 
+
+    // Upravení informací o produktu
+    public function renderEditItem($itemid)
+    {
+        if ($this->getUser()->isLoggedIn()) {
+            if ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner") {
+                $item = $this->database->table("items")->where("item_id", $itemid)->fetch();
+                $this->template->item = $item;
+            } else {
+                $this->flashMessage('Nemáte dostatečné oprávnění na přidání zboží');
+                $this->redirect("Shop:emptyCategory");
+            }
+        } else {
+            $this->flashMessage('Nemáte dostatečné oprávnění na přidání zboží');
+            $this->redirect("Shop:emptyCategory");
+        }
+    }
+
+    protected function createComponentEditItem()
+    {
+
+        $form = new form;
+        $form->addText("name");
+        $form->addText("description");
+        $form->addText("price");
+        $form->addText("content");
+        $form->addUpload('image', 'Obrázek zboží: ');
+        $form->addSubmit("submit");
+        $form->onSuccess[] = [$this, 'editItemSuccess'];
+        return $form;
+    }
+
+    public function EditItemSuccess($form, $values)
+    {
+        if ($values->image->getSanitizedName() != NULL) {
+            $file = $values->image;
+            $file_ext = strtolower(mb_substr($file->getSanitizedName(), strrpos($file->getSanitizedName(), ".")));
+            if ($file_ext == ".jpg" || $file_ext == ".jpeg" || $file_ext == ".png") {
+                $filename = Nette\Utils\Random::generate(15);
+                $filename = $filename . $file_ext;
+                $isUnique = ($this->database->table('items')->where("item_image", $filename)->count() <= 0);
+                while (!$isUnique) {
+                    $filename = Nette\Utils\Random::generate(15);
+                    $filename = $filename . ".jpg";
+                    $isUnique = ($this->database->table('items')->where("item_image", $filename)->count() <= 0);
+                }
+                $file->move("images/items/" . $filename);
+
+                $image = Image::fromFile("images/items/" . $filename);
+                $image->resize(450, 400, Image::STRETCH);
+                $image->save("images/items/" . $filename);
+
+                $final_image = "images/items/" . $filename;
+
+                $this->database->table("items")->where("item_id", $this->getParameter('itemid'))->update([
+                    'item_image' => $final_image,
+                    'item_name' => $values->name,
+                    'item_description' => $values->description,
+                    'item_price' => $values->price,
+                    'item_content' => $values->content
+                ]);
+            } else {
+                $this->flashMessage('Nahraný obrázek není správného formátu, zkuste to znovu.', "error");
+                $this->redirect('Shop:editItem', array("itemid" => $this->getParameter('itemid'), "categoryid" => $this->getParameter('categoryid')));
+            }
+        }
+        else
+        {
+            $this->database->table("items")->where("item_id", $this->getParameter('itemid'))->update([
+                'item_name' => $values->name,
+                'item_description' => $values->description,
+                'item_price' => $values->price,
+                'item_content' => $values->content
+            ]);
+        }
+
+
+
+        $this->flashMessage('Informace o produktu byly úspěšně upraveny.', "success");
+        $this->redirect('Shop:category', array("categoryid" => $this->getParameter('categoryid')));
+    }
 }

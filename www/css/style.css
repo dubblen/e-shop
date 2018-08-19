@@ -4,4 +4,29 @@ div.flash {
     border: 1px solid #E2C822;
     padding: 1em;
     margin: 1em 0;
+    text-align: center;
+}
+
+div.flash-error {
+    color: black;
+    background: #ffe6e6;
+    border: 1px solid red;
+    padding: 1em;
+    margin: 1em 0;
+    text-align: center;
+}
+
+div.flash-success {
+    color: black;
+    background: #b9ffa7;
+    border: 1px solid #76ff00;
+    padding: 1em;
+    margin: 1em 0;
+    text-align: center;
+}
+
+.myoffset1 {
+    margin-left: 25%;
+    padding-top: 2%;
+    padding-bottom: 2%;
 }

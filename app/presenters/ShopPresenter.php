@@ -99,6 +99,9 @@ class ShopPresenter extends BasePresenter
 
         $item = $this->database->table("items")->where("item_id", $itemid)->fetch();
         $this->template->item = $item;
+        $currentcategory = $item->category_id;
+        $this->template->categoryid = $currentcategory;
+
 
         $item_evaluation_number = $this->database->table("reviews")->where("item_id", $itemid)->Count();
         if ($item_evaluation_number >= 1) {
@@ -110,6 +113,13 @@ class ShopPresenter extends BasePresenter
             $this->database->table("items")->where("item_id", $itemid)->update([
 
                 'item_evaluation' => $item_final_evaluation,
+            ]);
+        }
+        else
+        {
+            $this->database->table("items")->where("item_id", $itemid)->update([
+
+                'item_evaluation' => NULL,
             ]);
         }
 
@@ -135,14 +145,15 @@ class ShopPresenter extends BasePresenter
             if ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner") {
                 $this->database->table("categories")->get($categoryid)->delete();
                 $this->database->table("items")->where("category_id", $categoryid)->delete();
-                $this->flashMessage('Kategorie byla odstraněna.', 'block');
+                $this->database->table("reviews")->where("category_id", $categoryid)->delete();
+                $this->flashMessage('Kategorie byla úspěšně odstraněna.', 'success');
                 $this->redirect('Shop:emptyCategory');
             } else {
-                $this->flashMessage('Nemáte dostatečné oprávnění na odebrání kategorie');
+                $this->flashMessage('Nemáte dostatečné oprávnění na odebrání kategorie', "error");
                 $this->redirect("Shop:emptyCategory");
             }
         } else {
-            $this->flashMessage('Nemáte dostatečné oprávnění na odebrání kategorie');
+            $this->flashMessage('Nemáte dostatečné oprávnění na odebrání kategorie', "error");
             $this->redirect("Shop:emptyCategory");
         }
     }
@@ -153,6 +164,7 @@ class ShopPresenter extends BasePresenter
         if ($this->getUser()->isLoggedIn()) {
             if ($this->getUser()->getIdentity()->role == "admin" || $this->getUser()->getIdentity()->role == "owner") {
                 $this->database->table("items")->where("item_id", $itemid)->delete();
+                $this->database->table("reviews")->where("item_id", $itemid)->delete();
                 $this->flashMessage('Produkt byl úspěšně odstraněn.', "success");
                 $this->redirect("Shop:category", array('categoryid' => $categoryid));
             } else {
@@ -246,14 +258,16 @@ class ShopPresenter extends BasePresenter
     }
 
     // Přidání hodnocení příspěvku a render formu s přidáním příspěvku
-    public function renderAddReview($itemid)
+    public function renderAddReview($itemid, $categoryid)
     {
         $this->template->itemid = $itemid;
+        $this->template->categoryid = $categoryid;
+
 
         $user_review = $this->database->table("reviews")->where('review_author_id = ? AND item_id = ?', $this->getUser()->getIdentity()->user_id, $itemid)->count();
 
         if ($user_review >= 1) {
-            $this->flashMessage('Již jste přidal hodnocení produktu, tudíž nemůžete přidat další.');
+            $this->flashMessage('Již jste přidal hodnocení produktu, tudíž nemůžete přidat další.', "success");
             $this->redirect("Shop:item", array("itemid" => $itemid));
         }
     }
@@ -283,6 +297,7 @@ class ShopPresenter extends BasePresenter
         if ($values->content == NULL) {
             $this->database->table("reviews")->insert([
                 'item_id' => $this->getParameter('itemid'),
+                'category_id' => $this->getParameter('categoryid'),
                 'review_author_id' => $this->getUser()->getIdentity()->user_id,
                 'review_author_name' => $this->getUser()->getIdentity()->first_name,
                 'date_created' => new DateTime,
@@ -291,6 +306,7 @@ class ShopPresenter extends BasePresenter
         } else {
             $this->database->table("reviews")->insert([
                 'item_id' => $this->getParameter('itemid'),
+                'category_id' => $this->getParameter('categoryid'),
                 'review_author_id' => $this->getUser()->getIdentity()->user_id,
                 'review_author_name' => $this->getUser()->getIdentity()->first_name,
                 'date_created' => new DateTime,
@@ -300,7 +316,7 @@ class ShopPresenter extends BasePresenter
         }
 
 
-        $this->flashMessage('Hodnocení produktu bylo úspěšně přidáno.');
+        $this->flashMessage('Hodnocení produktu bylo úspěšně přidáno.', "success");
         $this->redirect('Shop:item', array("itemid" => $this->getParameter('itemid')));
     }
 

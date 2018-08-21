@@ -105,7 +105,7 @@
                         </div>
                         <div class="card-footer">
                             {if $item['item']->item_evaluation == NULL}
-                                <span class="text-muted"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+                                <span class="text-muted"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i> - Bez recenzí</span>
                             {elseif $item['item']->item_evaluation < 0.5}
                                 <span class="text-muted"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
                             {elseif $item['item']->item_evaluation >= 0.5 && $item['item']->item_evaluation < 1}

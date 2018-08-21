@@ -12,13 +12,19 @@
                     {if $category['categoriesCount'] == 0}
                         <a style="color: red" href="#" class="list-group-item text-center">Žádná kategorie není momentálně k dispozici, zkuste to později.</a>
                     {elseif $category['categoriesCount'] == 1}
-                        <a n:href="Shop:category, 'categoryid' => $category['category']->category_id" class="list-group-item text-center">{$category['category']->category_name}</a>
-                        {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
+                        {if $categoryid == $category['category']->category_id}
+                            <b><a style="background-color: #dbdbdb" n:href="Shop:category, 'categoryid' => $category['category']->category_id"class="list-group-item text-center">{$category['category']->category_name}</a></b>
+                        {else}
+                            <a n:href="Shop:category, 'categoryid' => $category['category']->category_id" class="list-group-item text-center">{$category['category']->category_name}</a>
+                        {/if}                        {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
                             <a n:href="deleteCategory!, 'categoryid' => $category['category']->category_id" onClick="return confirm('Opravdu chceš smazat tuto kategorii?');" type="button" class="btn-remove btn btn-danger btn-xs"> Smazat kategorii "{$category['category']->category_name}"</a>
                         {/if}
                     {else}
-                        <a n:href="Shop:category, 'categoryid' => $category['category']->category_id" class="list-group-item text-center">{$category['category']->category_name}</a>
-                        {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
+                        {if $categoryid == $category['category']->category_id}
+                            <b><a style="background-color: #dbdbdb" n:href="Shop:category, 'categoryid' => $category['category']->category_id"class="list-group-item text-center">{$category['category']->category_name}</a></b>
+                        {else}
+                            <a n:href="Shop:category, 'categoryid' => $category['category']->category_id" class="list-group-item text-center">{$category['category']->category_name}</a>
+                        {/if}                        {if $user->getIdentity()->role == "admin" || $user->getIdentity()->role == "owner"}
                             <a n:href="deleteCategory!, 'categoryid' => $category['category']->category_id" onClick="return confirm('Opravdu chceš smazat tuto kategorii?');" type="button" class="btn-remove btn btn-danger btn-xs"> Smazat kategorii "{$category['category']->category_name}"</a>
                         {/if}
                     {/if}
@@ -100,9 +106,7 @@
                         {else}
                             <p>{$review['review']->review_content}</p>
                         {/if}
-                        {if $review['review']->item_evaluation == 0}
-                            <big class="text-muted">&#9734; &#9734; &#9734; &#9734; &#9734;</big><br>
-                        {elseif $review['review']->item_evaluation == 1}
+                        {if $review['review']->item_evaluation == 1}
                             <big class="text-muted">&#9733; &#9734; &#9734; &#9734; &#9734;</big><br>
                         {elseif $review['review']->item_evaluation == 2}
                             <big class="text-muted">&#9733; &#9733; &#9734; &#9734; &#9734;</big><br>
@@ -117,7 +121,7 @@
                         <hr>
                     {/foreach}
                     {if $user_review == NULL}
-                        <a n:href="Shop:addReview, 'itemid' => $item->item_id" class="btn btn-success">Zanechat recenzi</a>
+                        <a n:href="Shop:addReview, 'itemid' => $item->item_id, 'categoryid' => $item->category_id" class="btn btn-success">Zanechat recenzi</a>
                     {else}
                         <a class="btn btn-warning">Už jste ponechal recenzi na toto zboží</a>
                     {/if}

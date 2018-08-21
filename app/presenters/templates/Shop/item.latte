@@ -33,32 +33,59 @@
                     <h4 style="color: red">{$item->item_price},- Kč</h4>
                     <p class="card-text">{$item->item_content}</p>
                     {if $item->item_evaluation == NULL}
-                        <small class="text-muted">&#9734; &#9734; &#9734; &#9734; &#9734;</small>
-                    {elseif $item->item_evaluation == 1}
-                        <small class="text-muted">&#9733; &#9734; &#9734; &#9734; &#9734;</small>
-                    {elseif $item->item_evaluation == 2}
-                        <small class="text-muted">&#9733; &#9733; &#9734; &#9734; &#9734;</small>
-                    {elseif $item->item_evaluation == 3}
-                        <small class="text-muted">&#9733; &#9733; &#9733; &#9734; &#9734;</small>
-                    {elseif $item->item_evaluation == 4}
-                        <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                    {else}
-                        <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9733;</small>
+                        <span class="text-muted"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+                    {elseif $item->item_evaluation < 0.5}
+                        <span class="text-muted"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+                    {elseif $item->item_evaluation >= 0.5 && $item->item_evaluation < 1}
+                        <span class="text-muted"><i class="fas fa-star-half"></i></span>
+                    {elseif $item->item_evaluation >= 1 && $item->item_evaluation < 1.5}
+                        <span class="text-muted"><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+                    {elseif $item->item_evaluation >= 1.5 && $item->item_evaluation < 2}
+                        <span class="text-muted"><i class="fas fa-star"></i><i class="fas fa-star-half"></i></span>
+                    {elseif $item->item_evaluation >= 2 && $item->item_evaluation < 2.5}
+                        <span class="text-muted"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+                    {elseif $item->item_evaluation >= 2.5 && $item->item_evaluation < 3}
+                        <span class="text-muted"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half"></i></span>
+                    {elseif $item->item_evaluation >= 3 && $item->item_evaluation < 3.5}
+                        <span class="text-muted"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></span>
+                    {elseif $item->item_evaluation >= 3.5 && $item->item_evaluation < 4}
+                        <span class="text-muted"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half"></i></span>
+                    {elseif $item->item_evaluation >= 4 && $item->item_evaluation < 4.5}
+                        <span class="text-muted"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></span>
+                    {elseif $item->item_evaluation >= 4.5 && $item->item_evaluation < 5}
+                        <span class="text-muted"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half"></i></span>
+                    {elseif $item->item_evaluation == 5}
+                        <span class="text-muted"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                     {/if}
                     {if $item->item_evaluation == NULL}
                         <span>Doposud nebylo přidáno žádné hodnocení produktu</span>
-                    {elseif $item->item_evaluation == 1}
-                        <span>{$item->item_evaluation} hvězdička</span>
-                    {elseif $item->item_evaluation == 2}
-                        <span>{$item->item_evaluation} hvězdičky</span>
-                    {elseif $item->item_evaluation == 3}
-                        <span>{$item->item_evaluation} hvězdičky</span>
-                    {elseif $item->item_evaluation == 4}
-                        <span>{$item->item_evaluation} hvězdičky</span>
-                    {else}
-                        <span>{$item->item_evaluation} hvězdiček</span>
+                    {elseif $item->item_evaluation <= 0.5}
+                        <span> {$item->item_evaluation} hvězdiček</span>
+                    {elseif $item->item_evaluation >= 0.5 && $item->item_evaluation < 1}
+                        <span> {$item->item_evaluation} hvězdičky</span>
+                    {elseif $item->item_evaluation >= 1 && $item->item_evaluation < 1.5}
+                        <span> {$item->item_evaluation} hvězdička</span>
+                    {elseif $item->item_evaluation >= 1.5 && $item->item_evaluation < 2}
+                        <span> {$item->item_evaluation} hvězdiček</span>
+                    {elseif $item->item_evaluation >= 2 && $item->item_evaluation < 2.5}
+                        <span> {$item->item_evaluation} hvězdičky</span>
+                    {elseif $item->item_evaluation >= 2.5 && $item->item_evaluation < 3}
+                        <span> {$item->item_evaluation} hvězdiček</span>
+                    {elseif $item->item_evaluation >= 3 && $item->item_evaluation < 3.5}
+                        <span> {$item->item_evaluation} hvězdičky</span>
+                    {elseif $item->item_evaluation >= 3.5 && $item->item_evaluation < 4}
+                        <span> {$item->item_evaluation} hvězdiček</span>
+                    {elseif $item->item_evaluation >= 4 && $item->item_evaluation < 4.5}
+                        <span> {$item->item_evaluation} hvězdičky</span>
+                    {elseif $item->item_evaluation >= 4.5 && $item->item_evaluation < 5}
+                        <span> {$item->item_evaluation} hvězdiček</span>
+                    {elseif $item->item_evaluation == 5}
+                        <span> {$item->item_evaluation} hvězdiček</span>
                     {/if}
-
+                    <br><br>
+                    <a href="#" style="color: white; background-color: red" class="btn btn-lg">
+                        <i class="fas fa-cart-plus"></i> Přidat do košíku
+                    </a>
                 </div>
             </div>
 
@@ -73,7 +100,9 @@
                         {else}
                             <p>{$review['review']->review_content}</p>
                         {/if}
-                        {if $review['review']->item_evaluation == 1}
+                        {if $review['review']->item_evaluation == 0}
+                            <big class="text-muted">&#9734; &#9734; &#9734; &#9734; &#9734;</big><br>
+                        {elseif $review['review']->item_evaluation == 1}
                             <big class="text-muted">&#9733; &#9734; &#9734; &#9734; &#9734;</big><br>
                         {elseif $review['review']->item_evaluation == 2}
                             <big class="text-muted">&#9733; &#9733; &#9734; &#9734; &#9734;</big><br>

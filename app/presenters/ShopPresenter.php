@@ -43,6 +43,9 @@ class ShopPresenter extends BasePresenter
     public function renderCategory($categoryid)
     {
         $this->template->categoryid = $categoryid;
+        $current_category = $this->database->table("categories")->where("category_id", $categoryid)->fetch();
+        $this->template->current_category = $current_category;
+
         $categories = $this->database->table("categories");
         $categoriesArray = [];
         foreach ($categories as $category) {
@@ -335,6 +338,7 @@ class ShopPresenter extends BasePresenter
 
     public function EditItemSuccess($form, $values)
     {
+        $item = $this->database->table("items")->where("item_id", $this->getParameter('itemid'))->fetch();
         if ($values->image->getSanitizedName() != NULL) {
             $file = $values->image;
             $file_ext = strtolower(mb_substr($file->getSanitizedName(), strrpos($file->getSanitizedName(), ".")));

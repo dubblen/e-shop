@@ -30,3 +30,8 @@ div.flash-success {
     padding-top: 2%;
     padding-bottom: 2%;
 }
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+    width: 100%;
+}

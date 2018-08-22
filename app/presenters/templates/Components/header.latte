@@ -5,7 +5,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarResponsive">
-			<ul class="navbar-nav ml-auto">
+			<ul class="navbar-nav mr-auto" style="padding-left: 2%">
 				<li class="nav-item active">
 					<a class="nav-link" n:href=Shop:page">Domovská stránka <span class="sr-only"></span></a>
 				</li>
@@ -21,19 +21,26 @@
 			</ul>
 			<ul class="navbar-nav ml-auto">
                 {if $user->isLoggedIn()}
-					<li class="nav-item active">
-						{if $user->getIdentity()->role == "user"}
-							<a class="nav-link">Přihlášen jako: <span style="color: #7ffcff">{$user->getIdentity()->first_name}  {$user->getIdentity()->last_name}</span></a>
-						{elseif $user->getIdentity()->role == "admin"}
-							<a class="nav-link">Přihlášen jako: <span style="color: #7ffcff">{$user->getIdentity()->first_name}  {$user->getIdentity()->last_name}</span> - <span style="color: #8cff00"> ADMIN </span></a>
-                        {elseif $user->getIdentity()->role == "owner"}
-							<a class="nav-link">Přihlášen jako: <span style="color: #7ffcff">{$user->getIdentity()->first_name}  {$user->getIdentity()->last_name}</span> - <span style="color: #fff815"> OWNER </span></a>
-						{else}
-							<a class="nav-link"><span style="color: #ff0202">Problém s opravněním účtu!</span></a>
-                        {/if}
+					<li class="nav-item">
+						<a style="color: white" class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Košík </a>
 					</li>
-					<li class="nav-item active">
-						<a class="nav-link" n:href="Sign:out">Odhlásit</a>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {if $user->getIdentity()->role == "user"}
+								Přihlášen jako: <span style="color: #7ffcff">{$user->getIdentity()->first_name}  {$user->getIdentity()->last_name}</span>
+                            {elseif $user->getIdentity()->role == "admin"}
+								Přihlášen jako: <span style="color: #7ffcff">{$user->getIdentity()->first_name}  {$user->getIdentity()->last_name}</span> - <span style="color: #8cff00"> ADMIN </span>
+                            {elseif $user->getIdentity()->role == "owner"}
+								Přihlášen jako: <span style="color: #7ffcff">{$user->getIdentity()->first_name}  {$user->getIdentity()->last_name}</span> - <span style="color: #fff815"> OWNER </span>
+                            {else}
+								<span style="color: #ff0202">Problém s opravněním účtu!</span>
+                            {/if}
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="#">Spravovat účet</a>
+							<a class="dropdown-item" href="#">Přehled objednávek</a>
+							<a class="dropdown-item" n:href="Sign:out">Odhlásit</a>
+						</div>
 					</li>
                 {else}
 					<li class="nav-item active">

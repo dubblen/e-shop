@@ -29,7 +29,7 @@ class ServiceDefinition
 	public $parameters = [];
 
 	/** @var string|null  class or interface name */
-	private $class;
+	private $type;
 
 	/** @var Statement|null */
 	private $factory;
@@ -52,19 +52,21 @@ class ServiceDefinition
 	/** @var string|null  create | get */
 	private $implementMode;
 
-	/** @var callable */
-	private $notifier = 'pi'; // = noop
+	/** @var callable  'pi' is noop */
+	private $notifier = 'pi';
 
 
 	/**
+	 * @param  string|null
 	 * @return static
+	 * @deprecated
 	 */
-	public function setClass($class, array $args = [])
+	public function setClass($type, array $args = [])
 	{
 		call_user_func($this->notifier);
-		$this->class = $class;
+		$this->type = $type;
 		if ($args) {
-			$this->setFactory($class, $args);
+			$this->setFactory($type, $args);
 		}
 		return $this;
 	}
@@ -72,10 +74,32 @@ class ServiceDefinition
 
 	/**
 	 * @return string|null
+	 * @deprecated
 	 */
 	public function getClass()
 	{
-		return $this->class;
+		return $this->type;
+	}
+
+
+	/**
+	 * @param  string|null
+	 * @return static
+	 */
+	public function setType($type)
+	{
+		call_user_func($this->notifier);
+		$this->type = $type;
+		return $this;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function getType()
+	{
+		return $this->type;
 	}
 
 
@@ -114,7 +138,7 @@ class ServiceDefinition
 	public function setArguments(array $args = [])
 	{
 		if (!$this->factory) {
-			$this->factory = new Statement($this->class);
+			$this->factory = new Statement($this->type);
 		}
 		$this->factory->arguments = $args;
 		return $this;

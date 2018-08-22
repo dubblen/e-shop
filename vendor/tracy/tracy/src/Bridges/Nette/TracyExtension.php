@@ -26,12 +26,14 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		'strictMode' => null,
 		'showBar' => null,
 		'maxLen' => null,
+		'maxLength' => null,
 		'maxDepth' => null,
 		'showLocation' => null,
 		'scream' => null,
 		'bar' => [], // of class name
 		'blueScreen' => [], // of callback
 		'editorMapping' => [],
+		'netteMailer' => true,
 	];
 
 	/** @var bool */
@@ -72,7 +74,7 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		$class = method_exists('Nette\DI\Helpers', 'filterArguments') ? 'Nette\DI\Helpers' : 'Nette\DI\Compiler';
 
 		$options = $this->config;
-		unset($options['bar'], $options['blueScreen']);
+		unset($options['bar'], $options['blueScreen'], $options['netteMailer']);
 		if (isset($options['logSeverity'])) {
 			$res = 0;
 			foreach ((array) $options['logSeverity'] as $level) {
@@ -91,8 +93,14 @@ class TracyExtension extends Nette\DI\CompilerExtension
 		}
 
 		$logger = $builder->getDefinition($this->prefix('logger'));
-		if ($logger->getFactory()->getEntity() !== 'Tracy\Debugger::getLogger') {
+		if ($logger->getFactory()->getEntity() !== ['Tracy\Debugger', 'getLogger']) {
 			$initialize->addBody($builder->formatPhp('Tracy\Debugger::setLogger(?);', [$logger]));
+		}
+		if ($this->config['netteMailer'] && $builder->getByType('Nette\Mail\IMailer')) {
+			$initialize->addBody($builder->formatPhp('Tracy\Debugger::getLogger(?)->mailer = ?;', [
+				$logger,
+				[new Nette\DI\Statement('Tracy\Bridges\Nette\MailSender', ['fromEmail' => $this->config['fromEmail']]), 'send'],
+			]));
 		}
 
 		if ($this->debugMode) {
@@ -118,18 +126,8 @@ class TracyExtension extends Nette\DI\CompilerExtension
 			));
 		}
 
-		if ($dir = Tracy\Debugger::$logDirectory) {
-			$this->checkLogDirectory($dir);
+		if (($dir = Tracy\Debugger::$logDirectory) && !is_writable($dir)) {
+			throw new Nette\InvalidStateException("Make directory '$dir' writable.");
 		}
-	}
-
-
-	private function checkLogDirectory($dir)
-	{
-		$uniq = uniqid('_', true);
-		if (!@mkdir("$dir/$uniq")) { // @ - is escalated to exception
-			throw new Nette\InvalidStateException("Unable to write to directory '$dir'. Make this directory writable.");
-		}
-		rmdir("$dir/$uniq");
 	}
 }

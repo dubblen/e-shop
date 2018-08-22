@@ -18,12 +18,15 @@ class Container
 	use Nette\SmartObject;
 
 	const TAGS = 'tags';
+
 	const TYPES = 'types';
+
 	const SERVICES = 'services';
+
 	const ALIASES = 'aliases';
 
 	/** @var array  user parameters */
-	/*private*/public $parameters = [];
+	public $parameters = [];
 
 	/** @var array[] */
 	protected $meta = [];
@@ -196,17 +199,18 @@ class Container
 	 * @return object  service or null
 	 * @throws MissingServiceException
 	 */
-	public function getByType($class, $throw = true)
+	public function getByType($type, $throw = true)
 	{
-		$class = Helpers::normalizeClass($class);
-		if (!empty($this->meta[self::TYPES][$class][true])) {
-			if (count($names = $this->meta[self::TYPES][$class][true]) === 1) {
+		$type = Helpers::normalizeClass($type);
+		if (!empty($this->meta[self::TYPES][$type][true])) {
+			if (count($names = $this->meta[self::TYPES][$type][true]) === 1) {
 				return $this->getService($names[0]);
 			}
-			throw new MissingServiceException("Multiple services of type $class found: " . implode(', ', $names) . '.');
+			natsort($names);
+			throw new MissingServiceException("Multiple services of type $type found: " . implode(', ', $names) . '.');
 
 		} elseif ($throw) {
-			throw new MissingServiceException("Service of type $class not found.");
+			throw new MissingServiceException("Service of type $type not found.");
 		}
 	}
 
@@ -216,12 +220,12 @@ class Container
 	 * @param  string
 	 * @return string[]
 	 */
-	public function findByType($class)
+	public function findByType($type)
 	{
-		$class = Helpers::normalizeClass($class);
-		return empty($this->meta[self::TYPES][$class])
+		$type = Helpers::normalizeClass($type);
+		return empty($this->meta[self::TYPES][$type])
 			? []
-			: array_merge(...array_values($this->meta[self::TYPES][$class]));
+			: array_merge(...array_values($this->meta[self::TYPES][$type]));
 	}
 
 

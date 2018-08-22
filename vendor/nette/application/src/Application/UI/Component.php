@@ -11,10 +11,10 @@ use Nette;
 
 
 /**
- * Component is the base class for all Presenter Components.
+ * Component is the base class for all Presenter components.
  *
  * Components are persistent objects located on a presenter. They have ability to own
- * other child Components, and interact with user. Components have properties
+ * other child components, and interact with user. Components have properties
  * for storing their status, and responds to user command.
  *
  * @property-read Presenter $presenter
@@ -343,6 +343,19 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 			$presenter->createRequest($this, $destination, $args, 'redirect'),
 			Nette\Http\IResponse::S301_MOVED_PERMANENTLY
 		);
+	}
+
+
+	/**
+	 * Throws HTTP error.
+	 * @param  string
+	 * @param  int HTTP error code
+	 * @return void
+	 * @throws Nette\Application\BadRequestException
+	 */
+	public function error($message = null, $httpCode = Nette\Http\IResponse::S404_NOT_FOUND)
+	{
+		throw new Nette\Application\BadRequestException($message, $httpCode);
 	}
 
 

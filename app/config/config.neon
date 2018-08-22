@@ -22,3 +22,29 @@ services:
 	- App\Model\UserManager
 	- App\Forms\FormFactory
 	router: App\RouterFactory::createRouter
+
+extensions:
+	cart: Kollarovic\ShoppingCart\DI\Extension
+
+cart:
+	columns:
+		image: yes
+		name: yes
+		price: no
+		quantity: yes
+		totalWithoutVat: yes
+		total: yes
+		delete: yes
+	price:
+		currency: €
+		decimals: 2
+		decimalPoint: ','
+		thousandsSep: ' '
+		priceFormat: '{price} {currency}'
+	buttons:
+		next: Checkout
+		continue: Continue shopping
+		update: Update
+	image:
+		width: 80
+		height: 80
